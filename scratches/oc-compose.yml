@@ -1,11 +1,90 @@
-use: 0.6.9 # OC version
+# Partially based on my config for Z490 10600K platform with iGPU enabled
+# WARNING! THIS IS JUST AN EXAMPLE! DO NOT USE WITHOUT PREVIOUS EDIT
+
+use: 0.6.9 # OC version to get from GH
 
 acpi:
-  get: # Download from repo
+  get:  # Download from repo
     - SSDT-AWAC
     - SSDT-EC-USBX-DESKTOP
     - SSDT-PLUG-DRTNIA
-  add: # Get from build directory
-    - SSDT-CUSTOM
-  compile: # Get dsl from directory and run iASL
+  copy:  # Get from build directory
+    - SSDT-CUSTOM,do sth  # Put comments after comma
+  compile:  # Get dsl from directory and run iASL
     - SSDT-CUSTOM-PORTS
+  quirks:  # Merge into Sample.plist
+    ResetLogoStatus: yes
+
+booter:
+  quirks:
+    DevirtualiseMmio: yes
+    EnableWriteUnprotector: no
+    ProtectUefiServices: yes
+    RebuildAppleMemoryMap: yes
+    SetupVirtualMap: no
+    SyncRuntimePermissions: yes
+
+deviceprops:
+  iGPU:  # Alias for PciRoot(0x0)/Pci(0x2,0x0) and enables specify special syntax
+    igPlatformId: "07009B3E"        # Alias for AAPL,ig-platform-id
+    deviceId: "9B3E0000"
+
+    connectors:  # Patches for connectors
+      con3:
+        # Automatically adds framebuffer-con3-enable
+        flags: "20000000"
+        index: "FFFFFFFF"
+        pipe: "00000000"
+        type: "00080000"  # In future will be able to specify just by typing HDMI or DP
+
+    unifiedmem: "00000080"  # Alias for framebuffer-unifiedmem
+
+kernel:
+  kexts:
+    get:
+      - Lilu
+      - VirtualSMC
+      - AppleALC
+      - LucyRTL8125Ethernet
+      - SMCProcessor
+      - WhateverGreen
+      - RestrictEvents
+      - CPUFriend
+    copy:
+      - CPUFriendDataProvider
+  quirks:  # Merge into Sample.plist
+    AppleXcpmCfgLock: yes
+    DisableIOMapper: yes
+    LapicKernelPanic: no
+    PanicNoKextDump: yes
+    PowerTimeoutKernelPanic: yes
+    XhciPortLimit: yes
+
+misc:
+  debug:  # Merge into Sample.plist
+    Target: 3
+  security:  # Merge into Sample.plist
+    AllowNvramReset: yes
+    AllowSetDefault: yes
+    BlacklistAppleUpdate: yes
+    ScanPolicy: 0
+    SecureBootModel: Default
+    Vault: Optional
+
+nvram:
+  bootArgs: alcid=1 agdpmod=pikera
+  lang: "pl-PL:30788"
+
+platform:
+  type: iMac20,1
+  serial: C02XG0FDH7JY
+  boardSerial: C02839303QXH69FJA
+  smUUID: DBB364D6-44B2-4A02-B922-AB4396F16DA8
+
+uefi-drivers-copy: "drivers/"  # copies from UEFI drivers folder
+
+forceMerge:
+  # Everything in this section is just merged into Sample.plist (WARNING! eVeRyThInG hErE is CASE sensitive)
+  UEFI:
+    Quirks:
+      UnblockFsConnect: yes
