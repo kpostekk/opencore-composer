@@ -1,0 +1,11 @@
+use: 0.6.9 # OC version
+
+acpi:
+  get: # Download from repo
+    - SSDT-AWAC
+    - SSDT-EC-USBX-DESKTOP
+    - SSDT-PLUG-DRTNIA
+  add: # Get from build directory
+    - SSDT-CUSTOM
+  compile: # Get dsl from directory and run iASL
+    - SSDT-CUSTOM-PORTS
