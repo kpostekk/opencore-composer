@@ -12,11 +12,11 @@ acpi:
     - SSDT-CUSTOM,do sth  # Put comments after comma
   compile:  # Get dsl from directory and run iASL
     - SSDT-CUSTOM-PORTS
-  quirks:  # Merge into Sample.plist
+  quirks:  # Direct merge
     ResetLogoStatus: yes
 
 booter:
-  quirks:
+  quirks:  # Direct merge
     DevirtualiseMmio: yes
     EnableWriteUnprotector: no
     ProtectUefiServices: yes
@@ -52,7 +52,7 @@ kernel:
       - CPUFriend
     copy:
       - CPUFriendDataProvider
-  quirks:  # Merge into Sample.plist
+  quirks:  # Direct merge
     AppleXcpmCfgLock: yes
     DisableIOMapper: yes
     LapicKernelPanic: no
@@ -61,9 +61,9 @@ kernel:
     XhciPortLimit: yes
 
 misc:
-  debug:  # Merge into Sample.plist
+  debug:  # Direct merge
     Target: 3
-  security:  # Merge into Sample.plist
+  security:  # Direct merge
     AllowNvramReset: yes
     AllowSetDefault: yes
     BlacklistAppleUpdate: yes
