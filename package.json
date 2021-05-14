@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Easy and powerful OC customization tool",
   "main": "index.js",
+  "type": "module",
   "dependencies": {
     "adm-zip": "^0.5.5",
     "fs-extra": "^10.0.0",
@@ -20,6 +21,10 @@
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "eslint": "^7.26.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.23.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
     "node-ts": "^5.1.1"
   },
   "scripts": {
