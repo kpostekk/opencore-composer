@@ -5,6 +5,8 @@ import {PlistObject} from "plist"
 import * as fs from "fs"
 import {compileDeviceProperties} from "./devicePropsCompiler"
 import {mergeIGPUDeviceProps, directMerge} from "./merge"
+import {execFile} from "child_process"
+import * as process from "process"
 
 // open files
 const composeFile = fs.readFileSync("scratches/oc-compose.yml")
@@ -28,6 +30,24 @@ const merged = directMerge(config, composition)
 // save
 fs.writeFileSync("config.plist", plist.build(merged))
 
-config.get('DeviceProperties').Add."PciRoot(0x0)/Pci(0x1b,0x0)" = ""
+// validate
+switch (process.platform) {
 
-console.log(config)
+case "win32": execFile("ocvalidate/ocvalidate.exe", ['config.plist'], (err, data) => {
+  console.error(data)
+})
+  break
+
+case "darwin": execFile("ocvalidate/ocvalidate", ['config.plist'], (err, data) => {
+  console.error(data)
+})
+  break
+
+case "linux": execFile("ocvalidate/ocvalidate.linux", ['config.plist'], (err, data) => {
+  console.error(data)
+})
+  break
+
+default:
+  console.warn("There isn't a compatible validator for your OS. Try on win32, darwin (macOS) or linux")
+}
