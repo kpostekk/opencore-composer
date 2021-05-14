@@ -60,7 +60,5 @@ export interface Composition {
   misc: MiscSection
   nvram: NVRAMSection
   platform: PlatformSection
-  forceMerge: unknown
-
-
+  forceCopy?: Record<string, unknown>
 }

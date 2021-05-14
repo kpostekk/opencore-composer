@@ -83,7 +83,7 @@ platform:
 
 uefi-drivers-copy: "drivers/"  # copies from UEFI drivers folder
 
-forceMerge:
+forceCopy:
   # Everything in this section is just merged into Sample.plist (WARNING! eVeRyThInG hErE is CASE sensitive)
   UEFI:
     Quirks:
