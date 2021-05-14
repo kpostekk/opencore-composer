@@ -22,6 +22,7 @@ export interface DevicePropertiesSection {
     deviceId: string
     connectors?: Record<string, IGPUConnector>
     unifiedmem?: string
+    stolenmem?: string
   }
 }
 
