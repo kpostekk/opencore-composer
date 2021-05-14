@@ -1,2 +1,5 @@
-# opencore-composer
-Easy and powerful OC customization tool inspired by Dockerfiles
+# OpenCore composer
+Easy and powerful OC customization tool inspired by Docker
+
+## How it works
+
