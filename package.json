@@ -4,6 +4,7 @@
   "description": "Easy and powerful OC customization tool",
   "main": "index.js",
   "dependencies": {
+    "node-fetch": "^3.0.0-beta.9",
     "plist": "^3.0.2",
     "typescript": "^4.2.4",
     "yaml": "^1.10.2"
