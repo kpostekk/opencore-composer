@@ -1,17 +1,13 @@
 # Partially based on my config for Z490 10600K platform with iGPU enabled
 # WARNING! THIS IS JUST AN EXAMPLE! DO NOT USE WITHOUT PREVIOUS EDIT
 
-use: 0.6.9 # OC version to get from GH
+use: 0.6.9-RELEASE
 
 acpi:
-  get:  # Download from repo
+  copy:  # Copy from repo
     - SSDT-AWAC
     - SSDT-EC-USBX-DESKTOP
     - SSDT-PLUG-DRTNIA
-  copy:  # Get from build directory
-    - SSDT-CUSTOM,do sth  # Put comments after comma
-  compile:  # Get dsl from directory and run iASL
-    - SSDT-CUSTOM-PORTS
   quirks:  # Direct merge
     ResetLogoStatus: yes
 
@@ -24,24 +20,25 @@ booter:
     SetupVirtualMap: no
     SyncRuntimePermissions: yes
 
-deviceprops:
-  iGPU:  # Alias for PciRoot(0x0)/Pci(0x2,0x0) and enables specify special syntax
-    igPlatformId: "07009B3E"        # Alias for AAPL,ig-platform-id
-    deviceId: "9B3E0000"
 
-    connectors:  # Patches for connectors
-      con3:
-        # Automatically adds framebuffer-con3-enable
-        flags: "20000000"
-        index: "FFFFFFFF"
-        pipe: "00000000"
-        type: "00080000"  # In future will be able to specify just by typing HDMI or DP
+iGPU:  # Alias for PciRoot(0x0)/Pci(0x2,0x0) and enables specify special syntax
+  platformId: "07009B3E"        # Alias for AAPL,ig-platform-id
+  deviceId: "9B3E0000"
 
-    unifiedmem: "00000080"  # Alias for framebuffer-unifiedmem
+  connectors:  # Patches for connectors
+    con3:
+      # Automatically adds framebuffer-con3-enable
+      flags: "20000000"
+      index: "FFFFFFFF"
+      pipe: "00000000"
+      type: "00080000"  # In future will be able to specify just by typing HDMI or DP
+  binaryProperties:
+    framebuffer-stolenmem: "00003001"
+
 
 kernel:
   kexts:
-    get:
+    copy:
       - Lilu
       - VirtualSMC
       - AppleALC
@@ -50,7 +47,6 @@ kernel:
       - WhateverGreen
       - RestrictEvents
       - CPUFriend
-    copy:
       - CPUFriendDataProvider
   quirks:  # Direct merge
     AppleXcpmCfgLock: yes
@@ -81,9 +77,11 @@ platform:
   boardSerial: C02839303QXH69FJA
   smUUID: DBB364D6-44B2-4A02-B922-AB4396F16DA8
 
-uefi-drivers-copy: "drivers/"  # copies from UEFI drivers folder
+uefi:
+  drivers:
+    - HfsPlus.efi
 
-forceCopy:
+directCopy:
   # Everything in this section is just merged into Sample.plist (WARNING! eVeRyThInG hErE is CASE sensitive)
   UEFI:
     Quirks:
