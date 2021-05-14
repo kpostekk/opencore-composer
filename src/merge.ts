@@ -1,12 +1,13 @@
-import {PlistObject, PlistValue} from "plist"
+import {PlistObject} from "plist"
 import {Composition} from "./interfaces"
 
-export function mergeIGPUDeviceProps(config: PlistObject, patches: Record<string, string>): Record<string, unknown> {
+export function mergeIGPUDeviceProps(config: PlistObject, patches: Record<string, string>): PlistObject {
   const mergingObject = {
     "DeviceProperties": {
       "Add": {
         "PciRoot(0x0)/Pci(0x2,0x0)": patches
-      }
+      },
+      "Delete": {}
     }
   }
 
