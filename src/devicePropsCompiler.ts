@@ -1,6 +1,6 @@
-import {DevicePropertiesSection, IGPUConnector} from "./interfaces"
+import {DevicePropertiesSection} from "./interfaces"
 
-export function compileDeviceProperties(devProps: DevicePropertiesSection): Map<string, unknown> | null {
+export function compileDeviceProperties(devProps: DevicePropertiesSection): Record<string, string> | null {
   if (devProps.iGPU == null) {
     return null
   }
@@ -21,10 +21,10 @@ export function compileDeviceProperties(devProps: DevicePropertiesSection): Map<
     if (conProps.type) compileMap.set(`framebuffer-${conName}-type`, conProps.type)
   })
 
+  // convert to base64
   compileMap.forEach((v, k) => {
     compileMap.set(k, Buffer.from(v, "hex").toString("base64"))
   })
 
-  console.log(compileMap)
-  return compileMap
+  return Object.fromEntries(compileMap)
 }
