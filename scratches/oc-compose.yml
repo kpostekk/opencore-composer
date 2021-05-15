@@ -2,6 +2,7 @@
 # WARNING! THIS IS JUST AN EXAMPLE! DO NOT USE WITHOUT PREVIOUS EDIT
 
 use: 0.6.9-RELEASE
+arch: X64
 
 acpi:
   copy:  # Copy from repo

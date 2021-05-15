@@ -1,6 +1,10 @@
+import { Arch } from './archs'
+
 type Dictionary<T> = Record<string, T>
 
 export default interface Composition {
+  use: string
+  arch: Arch
   acpi?: {
     copy?: Array<string>
     // TODO: add delete
