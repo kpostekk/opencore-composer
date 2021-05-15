@@ -8,6 +8,19 @@ export default class Composer {
     this.composition = composition
   }
 
+  private generatePlatformUpdates () {
+    return {
+      PlatformInfo: {
+        Generic: {
+          MLB: this.composition.platform.boardSerial,
+          SystemProductName: this.composition.platform.type,
+          SystemSerialNumber: this.composition.platform.serial,
+          SystemUUID: this.composition.platform.smUUID
+        }
+      }
+    }
+  }
+
   mergeWith (config: PlistObject): PlistObject {
     console.log('A')
     return { ...config }
