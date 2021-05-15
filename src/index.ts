@@ -7,6 +7,7 @@ import * as plist from 'plist'
 import { PlistObject } from 'plist'
 import Packer from './packer'
 import Composition from './interfaces/composition'
+import getValidation from "./validator"
 
 const argv = yargs(hideBin(process.argv))
   .options({
@@ -34,3 +35,6 @@ writeFileSync(argv.output, plist.build(
     plist.parse(readFileSync(argv.input).toString()) as PlistObject
   )
 ))
+
+// validate
+getValidation(argv.assets + 'build/', argv.output)
