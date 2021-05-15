@@ -1,5 +1,6 @@
-import Composition from './interfaces/composition'
-import { PlistObject } from 'plist'
+import Composition from "./interfaces/composition"
+import {PlistObject} from "plist"
+import mergeDeep from "merge-deep"
 
 export default class Composer {
   readonly composition: Composition
@@ -22,7 +23,9 @@ export default class Composer {
   }
 
   mergeWith (config: PlistObject): PlistObject {
-    console.log('A')
-    return { ...config }
+    return mergeDeep(
+      config,
+      this.generatePlatformUpdates()
+    ) as PlistObject
   }
 }
