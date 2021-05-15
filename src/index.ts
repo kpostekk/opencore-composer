@@ -7,7 +7,7 @@ import * as plist from 'plist'
 import { PlistObject } from 'plist'
 import Packer from './packer'
 import Composition from './interfaces/composition'
-import getValidation from "./validator"
+import getValidation from './validator'
 
 const argv = yargs(hideBin(process.argv))
   .options({

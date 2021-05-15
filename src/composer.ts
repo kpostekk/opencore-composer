@@ -1,6 +1,6 @@
-import Composition from "./interfaces/composition"
-import {PlistObject} from "plist"
-import mergeDeep from "merge-deep"
+import Composition from './interfaces/composition'
+import { PlistObject } from 'plist'
+import mergeDeep from 'merge-deep'
 
 export default class Composer {
   readonly composition: Composition
