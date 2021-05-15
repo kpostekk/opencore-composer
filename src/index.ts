@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync } from 'fs-extra'
 import * as yaml from 'YAML'
 import * as plist from 'plist'
 import { PlistObject } from 'plist'
+import Packer from './packer'
 import Composition from './interfaces/composition'
 
 const argv = yargs(hideBin(process.argv))
@@ -21,6 +22,11 @@ console.log(argv)
 
 const composition = yaml.parse(readFileSync(argv.composition).toString()) as Composition
 const composer = new Composer(composition)
+const packer = new Packer(argv.assets, argv.target, argv.assets + 'build/')
+
+// move files
+// TODO: unpack utils
+packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)
 
 // save
 writeFileSync(argv.output, plist.build(
