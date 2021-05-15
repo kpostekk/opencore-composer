@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync } from 'fs-extra'
 import * as yaml from 'YAML'
 import * as plist from 'plist'
 import { PlistObject } from 'plist'
+import Composition from './interfaces/composition'
 
 const argv = yargs(hideBin(process.argv))
   .options({
@@ -18,7 +19,7 @@ const argv = yargs(hideBin(process.argv))
 
 console.log(argv)
 
-const composition = yaml.parse(readFileSync(argv.composition).toString())
+const composition = yaml.parse(readFileSync(argv.composition).toString()) as Composition
 const composer = new Composer(composition)
 
 // save
