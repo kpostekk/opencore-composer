@@ -8,9 +8,11 @@ import { PlistObject } from 'plist'
 
 const argv = yargs(hideBin(process.argv))
   .options({
-    output: { type: 'string', default: 'repo/EFI/OC/config.plist' },
-    input: { type: 'string', default: 'repo/Docs/Sample.plist' },
-    composition: { type: 'string', default: 'oc-compose.yml' }
+    output: { type: 'string', default: 'target/EFI/OC/config.plist' },
+    input: { type: 'string', default: 'assets/build/Docs/Sample.plist' },
+    composition: { type: 'string', default: 'oc-compose.yml' },
+    assets: { type: 'string', default: 'assets/' },
+    target: { type: 'string', default: 'target/' }
   })
   .argv
 
