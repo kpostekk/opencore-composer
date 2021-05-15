@@ -19,7 +19,7 @@ export default function getValidation (builderPath: string, configPath: string):
   }
 
   try {
-    execFileSync(ocvalidator, [configPath], {})
+    console.log(execFileSync(ocvalidator, [configPath]).toString())
   } catch (e) {
     console.warn(e.stdout.toString())
   }
