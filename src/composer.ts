@@ -2,6 +2,8 @@ import Composition from './interfaces/composition'
 import { PlistObject } from 'plist'
 import mergeDeep from 'merge-deep'
 import { AcpiAdd } from './interfaces/acpiAdd'
+import { KextEntry } from './interfaces/kextEntry'
+import logger from "./logger"
 
 export default class Composer {
   readonly composition: Composition
