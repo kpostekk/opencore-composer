@@ -14,9 +14,9 @@ export default class FileMan {
       if (!(await readdir(acpiPath)).includes(acpiName)) {
         try {
           await copy(assetsPath + acpiName, acpiPath + acpiName)
-          logger.info('Copy ' + acpiName + ' to ACPI directory')
+          logger.debug('Copy referenced ACPI', { ACPI: acpiName })
         } catch (err) {
-          logger.warn(err)
+          logger.error('Copy failed', err)
         }
       }
     }
@@ -27,9 +27,9 @@ export default class FileMan {
       if (!(await readdir(driversPath)).includes(driverName)) {
         try {
           await copy(assetsPath + driverName, driversPath + driverName)
-          logger.info('Copy ' + driverName + ' to Drivers directory')
+          logger.debug('Copy referenced UEFI driver', { driver: driverName })
         } catch (err) {
-          logger.warn(err)
+          logger.error('Copy failed', err)
         }
       }
     }
@@ -39,7 +39,7 @@ export default class FileMan {
     for (const filePath of await readdir(driversPath)) {
       if (!this.composition.uefi.drivers.includes(filePath)) {
         await remove(driversPath + filePath)
-        logger.debug('Removed ' + filePath + ' from Drivers directory')
+        logger.debug('Removed unreferenced UEFI driver from Drivers directory', { file: filePath })
       }
     }
   }
@@ -48,7 +48,7 @@ export default class FileMan {
     for (const filePath of await readdir(toolsPath)) {
       if (!this.composition.uefi.tools?.includes(filePath) ?? []) {
         await remove(toolsPath + filePath)
-        logger.debug('Removed ' + filePath + ' from Tools directory')
+        logger.debug('Removed unreferenced UEFI tool from Tools directory', { file: filePath })
       }
     }
   }
