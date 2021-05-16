@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import Composer from './composer'
-import { mkdirpSync, readFileSync, writeFileSync } from 'fs-extra'
+import { mkdirpSync, readFileSync, writeFileSync, pathExists } from 'fs-extra'
 import * as yaml from 'YAML'
 import * as plist from 'plist'
 import { PlistObject } from 'plist'
@@ -33,19 +35,25 @@ if (argv.init) {
 }
 
 async function mainRun () {
-  const composition = yaml.parse(readFileSync(argv.composition).toString()) as Composition
-  const composer = new Composer(composition)
+  // define composition manager
+  const composer = new Composer(
+    yaml.parse(readFileSync(argv.composition).toString()) as Composition
+  )
+  const composition = composer.composition
+  // define files managers
   const packer = new Packer(argv.assets, argv.target, argv.assets + 'build/')
   const fileman = new FileMan(composition)
   const downloader = new Downloader(argv.assets)
 
-  await Promise.all([
-    downloader.downloadOpenCore('0.6.9'),
-    downloader.downloadAcidantheraKext('AAppleALC', '1.6.0')
-  ])
+  // download OpenCore if not present
+  if (!(await pathExists(argv.assets + `OpenCore-${composition.use}.zip`))) {
+    await downloader.downloadOpenCore(composition.use.split('-')[0], composition.use.split('-')[1])
+  } else console.log('Using downloaded', `OpenCore-${composition.use}.zip`)
 
   // move files
   packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)
+
+  await downloader.downloadKexts(composition)
 
   // save
   writeFileSync(argv.output, plist.build(
@@ -54,14 +62,21 @@ async function mainRun () {
     )
   ))
 
-  // copy and clean
-  fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/', argv.assets)
-  fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/', argv.assets)
-  fileman.cleanDrivers(argv.target + 'EFI/OC/Drivers/')
-  fileman.cleanTools(argv.target + 'EFI/OC/Tools/')
+  // copy
+  await Promise.all([
+    fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/', argv.assets),
+    fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/', argv.assets)
+  ])
+  // and clean
+  await Promise.all([
+    fileman.cleanDrivers(argv.target + 'EFI/OC/Drivers/'),
+    fileman.cleanTools(argv.target + 'EFI/OC/Tools/')
+  ])
 
   // validate
   getValidation(argv.assets + 'build/', argv.output)
 }
 
-mainRun().catch((err: Error) => console.error(err.name + ':', err.message))
+mainRun()
+  // .catch((err: Error) => console.error(err.name + ':', err.message))
+  .then(() => process.exit())
