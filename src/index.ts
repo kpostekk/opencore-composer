@@ -16,12 +16,13 @@ import Downloader from './downloader'
 
 const argv = yargs(hideBin(process.argv))
   .options({
-    init: { type: 'boolean' },
+    init: { type: 'boolean', description: 'Create required files and folders.' },
+    download: { type: 'boolean', description: 'Only download referenced files.' },
     output: { type: 'string', default: 'target/EFI/OC/config.plist' },
     input: { type: 'string', default: 'assets/build/Docs/Sample.plist' },
     composition: { type: 'string', default: 'oc-compose.yml' },
-    assets: { type: 'string', default: 'assets/' },
-    target: { type: 'string', default: 'target/' }
+    assets: { type: 'string', default: 'assets/', description: 'Specify directory to keep all downloaded assets.' },
+    target: { type: 'string', default: 'target/', description: 'Specify directory with baked EFI.' }
   })
   .argv
 
@@ -54,6 +55,8 @@ async function mainRun () {
   packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)
 
   await downloader.downloadKexts(composition)
+
+  if (argv.download) process.exit()
 
   // save
   writeFileSync(argv.output, plist.build(

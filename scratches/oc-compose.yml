@@ -10,16 +10,16 @@ acpi:
     - SSDT-EC-USBX-DESKTOP.aml
     - SSDT-PLUG-DRTNIA.aml
   quirks:  # Direct merge
-    ResetLogoStatus: yes
+    ResetLogoStatus: true
 
 booter:
   quirks:  # Direct merge
-    DevirtualiseMmio: yes
-    EnableWriteUnprotector: no
-    ProtectUefiServices: yes
-    RebuildAppleMemoryMap: yes
-    SetupVirtualMap: no
-    SyncRuntimePermissions: yes
+    DevirtualiseMmio: true
+    EnableWriteUnprotector: false
+    ProtectUefiServices: true
+    RebuildAppleMemoryMap: true
+    SetupVirtualMap: false
+    SyncRuntimePermissions: true
 
 
 iGPU:  # Alias for PciRoot(0x0)/Pci(0x2,0x0) and enables specify special syntax
@@ -40,30 +40,35 @@ iGPU:  # Alias for PciRoot(0x0)/Pci(0x2,0x0) and enables specify special syntax
 kernel:
   kexts:
     copy:
-      - Lilu
       - VirtualSMC
-      - AppleALC
       - LucyRTL8125Ethernet
       - SMCProcessor
-      - WhateverGreen
       - RestrictEvents
       - CPUFriend
       - CPUFriendDataProvider
+    get:
+      - Lilu:1.5.3
+      - AppleAlc:1.6.0
+      - WhateverGreen:1.4.9
+      - RestrictEvents:1.0.1
+
   quirks:  # Direct merge
-    AppleXcpmCfgLock: yes
-    DisableIOMapper: yes
-    LapicKernelPanic: no
-    PanicNoKextDump: yes
-    PowerTimeoutKernelPanic: yes
-    XhciPortLimit: yes
+    AppleXcpmCfgLock: true
+    DisableIOMapper: true
+    LapicKernelPanic: false
+    PanicNoKextDump: true
+    PowerTimeoutKernelPanic: true
+    XhciPortLimit: true
 
 misc:
+  boot:
+    PickerMode: External
   debug:  # Direct merge
     Target: 3
   security:  # Direct merge
-    AllowNvramReset: yes
-    AllowSetDefault: yes
-    BlacklistAppleUpdate: yes
+    AllowNvramReset: true
+    AllowSetDefault: true
+    BlacklistAppleUpdate: true
     ScanPolicy: 0
     SecureBootModel: Default
     Vault: Optional
@@ -83,9 +88,11 @@ uefi:
     - HfsPlus.efi
     - OpenRuntime.efi
     - OpenCanopy.efi
+  tools:
+    - OpenShell.efi
 
 directCopy:
   # Everything in this section is just merged into Sample.plist (WARNING! eVeRyThInG hErE is CASE sensitive)
   UEFI:
     Quirks:
-      UnblockFsConnect: yes
+      UnblockFsConnect: true
