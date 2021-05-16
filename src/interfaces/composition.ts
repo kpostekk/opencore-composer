@@ -32,6 +32,7 @@ export default interface Composition {
   kernel: {
     kexts: {
       copy: Array<string>
+      get?: Array<string>
     }
     // TODO: add block
     // TODO: add emulate
