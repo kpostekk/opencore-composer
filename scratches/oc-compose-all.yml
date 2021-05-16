@@ -1,0 +1,24 @@
+use: 0.6.9-RELEASE
+platform:
+  boardSerial: ""
+  serial: ""
+  smUUID: ""
+  type: ""
+uefi:
+  drivers:
+    - HfsPlus.efi
+acpi: {}
+arch: X64
+booter: {}
+directCopy: {}
+iGPU: {}
+kernel:
+  kexts:
+    copy:
+      - CPUFriendDataProvider
+    get:
+      - CPUFriend:1.2.3
+  quirks: {}
+misc: {}
+
+
