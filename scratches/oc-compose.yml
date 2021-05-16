@@ -81,6 +81,8 @@ platform:
 uefi:
   drivers:
     - HfsPlus.efi
+    - OpenRuntime.efi
+    - OpenCanopy.efi
 
 directCopy:
   # Everything in this section is just merged into Sample.plist (WARNING! eVeRyThInG hErE is CASE sensitive)
