@@ -3,6 +3,13 @@
   "version": "0.0.1",
   "description": "Easy and powerful OC customization tool",
   "dependencies": {
+    "@types/adm-zip": "^0.4.34",
+    "@types/fs-extra": "^9.0.11",
+    "@types/merge-deep": "^3.0.0",
+    "@types/node": "^15.0.3",
+    "@types/plist": "^3.0.2",
+    "@types/yaml": "^1.9.7",
+    "@types/yargs": "^16.0.1",
     "adm-zip": "^0.5.5",
     "fs-extra": "^10.0.0",
     "merge-deep": "^3.0.3",
@@ -13,13 +20,6 @@
     "yargs": "^17.0.1"
   },
   "devDependencies": {
-    "@types/adm-zip": "^0.4.34",
-    "@types/fs-extra": "^9.0.11",
-    "@types/merge-deep": "^3.0.0",
-    "@types/node": "^15.0.3",
-    "@types/plist": "^3.0.2",
-    "@types/yaml": "^1.9.7",
-    "@types/yargs": "^16.0.1",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "eslint": "^7.26.0",
@@ -28,9 +28,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "node-ts": "^5.1.1"
-  },
-  "scripts": {
-    "compose": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -45,5 +42,8 @@
   "bugs": {
     "url": "https://github.com/kpostekk/opencore-composer/issues"
   },
-  "homepage": "https://github.com/kpostekk/opencore-composer#readme"
+  "homepage": "https://github.com/kpostekk/opencore-composer#readme",
+  "bin": {
+    "oc-composer": "dist/index.js"
+  }
 }
