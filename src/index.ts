@@ -11,7 +11,7 @@ import Packer from './packer'
 import Composition from './interfaces/composition'
 import getValidation from './validator'
 import FileMan from './cleanMan'
-import { initString } from './initComposition'
+import { initComposition } from './initComposition'
 import Downloader from './downloader'
 import logger from './logger'
 
@@ -32,7 +32,7 @@ logger.info('Starting OpenCore Composer', argv)
 if (argv.init) {
   mkdirpSync(argv.target)
   mkdirpSync(argv.assets)
-  writeFileSync(argv.composition, initString)
+  writeFileSync(argv.composition, YAML.stringify(initComposition))
   process.exit()
 }
 
