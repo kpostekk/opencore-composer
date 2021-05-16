@@ -6,9 +6,9 @@ arch: X64
 
 acpi:
   copy:  # Copy from assets
-    - SSDT-AWAC
-    - SSDT-EC-USBX-DESKTOP
-    - SSDT-PLUG-DRTNIA
+    - SSDT-AWAC.aml
+    - SSDT-EC-USBX-DESKTOP.aml
+    - SSDT-PLUG-DRTNIA.aml
   quirks:  # Direct merge
     ResetLogoStatus: yes
 

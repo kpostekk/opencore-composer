@@ -8,6 +8,19 @@ export default class FileMan {
     this.composition = composition
   }
 
+  copyMissingACPI (acpiPath: string, assetsPath: string) {
+    for (const acpiName of this.composition.acpi?.copy ?? []) {
+      if (!readdirSync(acpiPath).includes(acpiName)) {
+        try {
+          copySync(assetsPath + acpiName, acpiPath + acpiName)
+          console.log('Copy ' + acpiName + ' to ACPI directory')
+        } catch (err) {
+          console.warn(err)
+        }
+      }
+    }
+  }
+
   copyMissingDrivers (driversPath: string, assetsPath: string) {
     for (const driverName of this.composition.uefi.drivers) {
       if (!readdirSync(driversPath).includes(driverName)) {

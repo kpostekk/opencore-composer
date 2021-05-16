@@ -37,7 +37,8 @@ writeFileSync(argv.output, plist.build(
   )
 ))
 
-// clean
+// copy and clean
+fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/', argv.assets)
 fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/', argv.assets)
 fileman.cleanDrivers(argv.target + 'EFI/OC/Drivers/')
 

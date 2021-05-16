@@ -17,7 +17,7 @@ export default class Composer {
           const addEntry: AcpiAdd = {
             Comment: 'Added by composer',
             Enabled: true,
-            Path: name + '.aml'
+            Path: name
           }
           return addEntry
         }) ?? []
