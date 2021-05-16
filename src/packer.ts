@@ -6,8 +6,6 @@ export default class Packer {
   /*
   This class provides support for:
    - Unpacking zips
-   - Copying assets
-   - TODO: Possibly downloading OC
    */
   private readonly path: string
   private readonly target: string
