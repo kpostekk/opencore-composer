@@ -3,7 +3,7 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import Composer from './composer'
-import { mkdirpSync, readFileSync, writeFileSync, pathExists } from 'fs-extra'
+import { mkdirpSync, pathExists, readFileSync, writeFileSync } from 'fs-extra'
 import * as yaml from 'YAML'
 import * as plist from 'plist'
 import { PlistObject } from 'plist'
@@ -47,7 +47,7 @@ async function mainRun () {
   const downloader = new Downloader(argv.assets)
 
   // download OpenCore if not present
-  if (!(await pathExists(argv.assets + `OpenCore-${composition.use}.zip`))) {
+  if (!(await pathExists(argv.assets + `OpenCore-${composition.use}.zip`)) || argv.download) {
     await downloader.downloadOpenCore(composition.use.split('-')[0], composition.use.split('-')[1])
   } else console.log('Using downloaded', `OpenCore-${composition.use}.zip`)
 
