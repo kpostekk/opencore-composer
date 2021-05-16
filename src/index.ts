@@ -44,7 +44,7 @@ async function mainRun () {
   const composition = composer.composition
   // define files managers
   const packer = new Packer(argv.assets, argv.target, argv.assets + 'build/')
-  const fileman = new FileMan(composition)
+  const fileman = new FileMan(composition, argv.assets)
   const downloader = new Downloader(argv.assets)
 
   // download OpenCore if not present
@@ -65,10 +65,11 @@ async function mainRun () {
   // copy
   logger.info('Coping files to target', { target: argv.target })
   await Promise.all([
-    fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/', argv.assets),
+    fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/'),
     fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/'),
     fileman.copyKexts(argv.target + 'EFI/OC/Kexts/')
   ])
+
   // and clean
   logger.info('Cleaning target', { target: argv.target })
   await Promise.all([
