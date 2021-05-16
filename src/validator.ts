@@ -20,8 +20,13 @@ export default function getValidation (builderPath: string, configPath: string):
   }
 
   try {
-    logger.info('ocvalidator ran successfully', { result: execFileSync(ocvalidator, [configPath]).toString() })
+    const ocValidatorResult = execFileSync(ocvalidator, [configPath]).toString()
+    logger.info('ocvalidator ran successfully' + ocValidatorResult
+      .replace('\r', '')
+      .replace('\n', ', '),
+    { result: ocValidatorResult }
+    )
   } catch (e) {
-    logger.error('ocvalidator raised some issue', { result: e.stdout.toString() })
+    logger.error('ocvalidator raised some issue' + e.stdout.toString(), { result: e.stdout.toString() })
   }
 }
