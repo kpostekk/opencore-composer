@@ -3,15 +3,25 @@ Easy and powerful OC customization tool inspired by Docker (by docker-compose mo
 
 ## Installation
 
+```shell
+git clone https://github.com/kpostekk/opencore-composer.git
+cd opencore-composer
+npm i
+npx tsc
+(sudo) npm link # on windows run as admin
+```
+
 ### Requirements
 
-- NodeJS (idk what version, 14 is ok I guess)
+- NodeJS (w/ npm ofc) (idk what version, 14 is ok I guess)
+- Git
 - Brain
 
 ### Run
 
 ```shell
-npm run compose
+oc-composer --init # initialize env
+oc-composer
 ```
 
 ## Why?
