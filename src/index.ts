@@ -8,6 +8,7 @@ import { PlistObject } from 'plist'
 import Packer from './packer'
 import Composition from './interfaces/composition'
 import getValidation from './validator'
+import FileMan from './cleanMan'
 
 const argv = yargs(hideBin(process.argv))
   .options({
@@ -24,6 +25,7 @@ console.log(argv)
 const composition = yaml.parse(readFileSync(argv.composition).toString()) as Composition
 const composer = new Composer(composition)
 const packer = new Packer(argv.assets, argv.target, argv.assets + 'build/')
+const fileman = new FileMan(composition)
 
 // move files
 // TODO: unpack utils
@@ -35,6 +37,10 @@ writeFileSync(argv.output, plist.build(
     plist.parse(readFileSync(argv.input).toString()) as PlistObject
   )
 ))
+
+// clean
+fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/', argv.assets)
+fileman.cleanDrivers(argv.target + 'EFI/OC/Drivers/')
 
 // validate
 getValidation(argv.assets + 'build/', argv.output)
