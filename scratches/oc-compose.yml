@@ -40,12 +40,14 @@ iGPU:  # Alias for PciRoot(0x0)/Pci(0x2,0x0) and enables specify special syntax
 kernel:
   kexts:
     copy:
+      - Lilu
       - VirtualSMC
-      - LucyRTL8125Ethernet
       - SMCProcessor
+      - AirportItlwm
+      - LucyRTL8125Ethernet
+      - AppleAlc
+      - WhateverGreen
       - RestrictEvents
-      - CPUFriend
-      - CPUFriendDataProvider
     get:
       - Lilu:1.5.3
       - AppleAlc:1.6.0
