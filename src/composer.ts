@@ -25,6 +25,19 @@ export default class Composer {
     }
   }
 
+  // TODO: implement ACPI quirks
+  // TODO: implement Booter quirks
+  // TODO: implement iGPU
+  // TODO: implement Kernel kexts copy
+  private includeGetKexts () {
+    for (const getKext in this.composition.kernel.kexts.get) {
+      this.composition.kernel.kexts.copy.push(
+        getKext.split(':')[0]
+      )
+    }
+  }
+
+  // TODO: implement Kernel quirks
 
   private generateMisc () {
     return {
@@ -35,6 +48,8 @@ export default class Composer {
       }
     }
   }
+
+  // TODO: implement NVRAM
 
   private generateDrivers () {
     return {
