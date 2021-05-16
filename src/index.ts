@@ -62,13 +62,6 @@ async function mainRun () {
 
   if (argv.download) { logger.warn('Exit after download, --download passed'); process.exit() }
 
-  // save
-  writeFileSync(argv.output, plist.build(
-    composer.mergeWith(
-      plist.parse(readFileSync(argv.input).toString()) as PlistObject
-    )
-  ))
-
   // copy
   logger.info('Coping files to target', { target: argv.target })
   await Promise.all([
@@ -82,6 +75,14 @@ async function mainRun () {
     fileman.cleanDrivers(argv.target + 'EFI/OC/Drivers/'),
     fileman.cleanTools(argv.target + 'EFI/OC/Tools/')
   ])
+
+  // save
+  writeFileSync(argv.output, plist.build(
+    composer.mergeWith(
+      plist.parse(readFileSync(argv.input).toString()) as PlistObject
+    )
+  ))
+  logger.info('Saved config file', { location: argv.output, source: argv.input })
 
   // validate
   getValidation(argv.assets + 'build/', argv.output)
