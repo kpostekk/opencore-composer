@@ -16,6 +16,7 @@
     ],
     "rules": {
         "quotes": ["warn", "single"],
-        "object-curly-spacing": "warn"
+        "object-curly-spacing": "warn",
+        "no-console": "warn"
     }
 }
