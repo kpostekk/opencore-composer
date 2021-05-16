@@ -28,7 +28,6 @@ const packer = new Packer(argv.assets, argv.target, argv.assets + 'build/')
 const fileman = new FileMan(composition)
 
 // move files
-// TODO: unpack utils
 packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)
 
 // save

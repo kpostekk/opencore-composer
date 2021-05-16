@@ -38,6 +38,7 @@ export default class Composer {
     }
   }
 
+  // cleaning config and target
   private static removeWarnings (config: Record<string, any>): PlistObject {
     delete config['#WARNING - 1']; delete config['#WARNING - 2']; delete config['#WARNING - 3']; delete config['#WARNING - 4']
     return config
