@@ -30,9 +30,12 @@ const argv = yargs(hideBin(process.argv))
 logger.info('Starting OpenCore Composer', argv)
 
 if (argv.init) {
+  logger.info('Preparing environment')
   mkdirpSync(argv.target)
   mkdirpSync(argv.assets)
+  logger.info('Rendering composition')
   writeFileSync(argv.composition, YAML.stringify(initComposition))
+  logger.info('Environment is ready')
   process.exit()
 }
 
