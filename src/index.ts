@@ -13,6 +13,7 @@ import getValidation from './validator'
 import FileMan from './cleanMan'
 import { initString } from './initComposition'
 import Downloader from './downloader'
+import logger from './logger'
 
 const argv = yargs(hideBin(process.argv))
   .options({
@@ -26,7 +27,7 @@ const argv = yargs(hideBin(process.argv))
   })
   .argv
 
-console.log(argv, process.cwd())
+logger.debug('Starting OpenCore-composer', argv)
 
 if (argv.init) {
   mkdirpSync(argv.target)
@@ -49,7 +50,7 @@ async function mainRun () {
   // download OpenCore if not present
   if (!(await pathExists(argv.assets + `OpenCore-${composition.use}.zip`)) || argv.download) {
     await downloader.downloadOpenCore(composition.use.split('-')[0], composition.use.split('-')[1])
-  } else console.log('Using downloaded', `OpenCore-${composition.use}.zip`)
+  } else logger.debug('Using bundled OpenCore', { use: composition.use })
 
   // move files
   packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)

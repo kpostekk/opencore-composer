@@ -1,4 +1,5 @@
 import { execFileSync } from 'child_process'
+import logger from './logger'
 
 export default function getValidation (builderPath: string, configPath: string): void {
   const validatorsPath = builderPath + 'Utilities/ocvalidate/'
@@ -19,8 +20,8 @@ export default function getValidation (builderPath: string, configPath: string):
   }
 
   try {
-    console.log(execFileSync(ocvalidator, [configPath]).toString())
+    logger.info('ocvalidator ran successfully', { result: execFileSync(ocvalidator, [configPath]).toString() })
   } catch (e) {
-    console.warn(e.stdout.toString())
+    logger.error('ocvalidator raised some issue', { result: e.stdout.toString() })
   }
 }

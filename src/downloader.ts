@@ -2,6 +2,7 @@ import { writeFile } from 'fs-extra'
 import fetch from 'node-fetch'
 import AdmZip from 'adm-zip'
 import Composition from './interfaces/composition'
+import logger from './logger'
 
 export default class Downloader {
   private readonly dlPath: string
@@ -16,20 +17,24 @@ export default class Downloader {
   }
 
   async downloadOpenCore (version: string, build: string = 'RELEASE') {
-    console.log('Downloading OpenCore ' + version, build)
+    logger.debug('Downloading OpenCore', { version: version + build })
+
+    const ocName = 'OpenCore-{v}-{b}.zip'
+      .replaceAll('{v}', version)
+      .replaceAll('{b}', build)
+
     const response = await fetch(
       this.links.OpenCore
         .replaceAll('{v}', version)
         .replaceAll('{b}', build)
     )
-    console.log('Saving OpenCore')
+
     await writeFile(
-      this.dlPath + 'OpenCore-{v}-{b}.zip'
-        .replaceAll('{v}', version)
-        .replaceAll('{b}', build),
+      this.dlPath + ocName,
       await response.buffer()
     )
-    console.log('OpenCore saved')
+
+    logger.debug('OpenCore saved', { as: ocName })
   }
 
   async downloadKexts (composition: Composition) {
@@ -40,19 +45,23 @@ export default class Downloader {
   }
 
   private async downloadAcidantheraKext (kext: string, version: string, build: string = 'RELEASE') {
-    console.log('Downloading', kext, version, build)
+    logger.debug('Downloading kext', { kextName: kext, version: version, build: build })
+
     const response = await fetch(
       this.links.AcidantheraKexts
         .replaceAll('{v}', version)
         .replaceAll('{b}', build)
         .replaceAll('{k}', kext)
     )
+
     if (response.status === 404) {
       throw Error(`"${kext}" is not an AcidantheraKexts!`)
     }
-    console.log('Extracting', kext, version, build)
+
+    logger.debug('Extracting downloaded kext', { kextName: kext, version: version, build: build })
+
     const kextZip = new AdmZip(await response.buffer())
     kextZip.extractAllTo(this.dlPath)
-    console.log('Extracting finished for', kext, version, build)
+    logger.debug('Kext extracted', { kextName: kext, version: version, build: build })
   }
 }
