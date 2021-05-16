@@ -29,11 +29,34 @@ export default class Composer {
   // TODO: implement Booter quirks
   // TODO: implement iGPU
   // TODO: implement Kernel kexts copy
-  private includeGetKexts () {
-    for (const getKext in this.composition.kernel.kexts.get) {
-      this.composition.kernel.kexts.copy.push(
-        getKext.split(':')[0]
-      )
+
+  checkGetKextsInCopySection () {
+    for (const kext of this.composition.kernel.kexts.get ?? []) {
+      const [name] = kext.split(':')
+      if (!this.composition.kernel.kexts.copy.includes(name)) {
+        logger.warn(`Kext ${name} IS NOT mentioned in copy section!`)
+      }
+    }
+  }
+
+  generateKexts () {
+    return {
+      Kernel: {
+        Add: this.composition.kernel.kexts.copy.map((kextName) => {
+          const kextEntry: KextEntry = {
+            Arch: 'Any',
+            BundlePath: `${kextName}.kext`,
+            Comment: '',
+            Enabled: true,
+            ExecutablePath: 'Contents/MacOS/' + kextName,
+            MaxKernel: '',
+            MinKernel: '',
+            PlistPath: 'Contents/Info.plist'
+
+          }
+          return kextEntry
+        })
+      }
     }
   }
 
@@ -97,6 +120,7 @@ export default class Composer {
       this.generateAcpiAdd(),
       this.generateMisc(),
       this.generateDrivers(),
+      this.generateKexts(),
       this.generatePlatformUpdates()
     ) as PlistObject
   }

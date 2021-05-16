@@ -55,7 +55,10 @@ async function mainRun () {
   // move files
   packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)
 
+  // download kexts TODO: pack into method
   await downloader.downloadKexts(composition)
+  composer.checkGetKextsInCopySection()
+  logger.info(`Downloaded ${composition.kernel.kexts.get?.length ?? 0} kexts`, { downloadList: composition.kernel.kexts.get })
 
   if (argv.download) { logger.warn('Exit after download, --download passed'); process.exit() }
 
@@ -70,7 +73,8 @@ async function mainRun () {
   logger.info('Coping files to target', { target: argv.target })
   await Promise.all([
     fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/', argv.assets),
-    fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/', argv.assets)
+    fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/'),
+    fileman.copyKexts(argv.target + 'EFI/OC/Kexts/')
   ])
   // and clean
   logger.info('Cleaning target', { target: argv.target })
