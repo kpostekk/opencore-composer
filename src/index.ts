@@ -4,7 +4,7 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import Composer from './composer'
 import { mkdirpSync, pathExists, readFileSync, writeFileSync } from 'fs-extra'
-import * as yaml from 'YAML'
+import * as YAML from 'YAML'
 import * as plist from 'plist'
 import { PlistObject } from 'plist'
 import Packer from './packer'
@@ -39,7 +39,7 @@ if (argv.init) {
 async function mainRun () {
   // define composition manager
   const composer = new Composer(
-    yaml.parse(readFileSync(argv.composition).toString()) as Composition
+    YAML.parse(readFileSync(argv.composition).toString()) as Composition
   )
   const composition = composer.composition
   // define files managers
