@@ -1,4 +1,4 @@
-# OpenCore composer
+# <img src="https://raw.githubusercontent.com/kpostekk/opencore-composer/main/.github/OpenCore%20composer%20head.jpg" alt="OpenCore composer">
 Easy and powerful OC customization tool inspired by Docker (by docker-compose mostly)
 
 ## Installation
