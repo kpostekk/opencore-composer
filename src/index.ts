@@ -89,6 +89,15 @@ async function mainRun () {
   getValidation(argv.assets + 'build/', argv.output)
 }
 
+const compileStart = process.hrtime.bigint()
+
 mainRun()
-  .catch((err: Error) => logger.error(err.name, err))
-  .then(() => process.exit())
+  .catch((err: Error) => {
+    logger.error(err.name, err)
+    process.exit(78)
+  })
+  .then(() => {
+    const runInMilliseconds = (process.hrtime.bigint() - compileStart) / BigInt(1000000)
+    logger.info(`Composing took ${runInMilliseconds}ms`)
+    process.exit()
+  })
