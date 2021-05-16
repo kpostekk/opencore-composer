@@ -26,6 +26,16 @@ export default class Composer {
   }
 
 
+  private generateMisc () {
+    return {
+      Misc: {
+        Boot: this.composition.misc?.boot ?? {},
+        Debug: this.composition.misc?.debug ?? {},
+        Security: this.composition.misc?.security ?? {}
+      }
+    }
+  }
+
   private generateDrivers () {
     return {
       UEFI: {
@@ -60,6 +70,7 @@ export default class Composer {
     config.ACPI.Add = []
     config.Kernel.Add = []
     config.UEFI.Drivers = []
+    config.Misc.Tools = []
     return config
   }
 
@@ -69,6 +80,7 @@ export default class Composer {
     return mergeDeep(
       config,
       this.generateAcpiAdd(),
+      this.generateMisc(),
       this.generateDrivers(),
       this.generatePlatformUpdates()
     ) as PlistObject
