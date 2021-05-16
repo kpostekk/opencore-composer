@@ -25,6 +25,15 @@ export default class Composer {
     }
   }
 
+
+  private generateDrivers () {
+    return {
+      UEFI: {
+        Drivers: this.composition.uefi.drivers
+      }
+    }
+  }
+
   private generatePlatformUpdates () {
     return {
       PlatformInfo: {
@@ -50,6 +59,7 @@ export default class Composer {
 
     config.ACPI.Add = []
     config.Kernel.Add = []
+    config.UEFI.Drivers = []
     return config
   }
 
@@ -59,6 +69,7 @@ export default class Composer {
     return mergeDeep(
       config,
       this.generateAcpiAdd(),
+      this.generateDrivers(),
       this.generatePlatformUpdates()
     ) as PlistObject
   }

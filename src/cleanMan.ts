@@ -42,4 +42,13 @@ export default class FileMan {
       }
     })
   }
+
+  cleanTools (toolsPath: string) {
+    readdirSync(toolsPath).forEach((filePath) => {
+      if (!this.composition.uefi.tools?.includes(filePath) ?? []) {
+        removeSync(toolsPath + filePath)
+        console.log('Removed ' + filePath + ' from Tools directory')
+      }
+    })
+  }
 }

@@ -41,6 +41,7 @@ writeFileSync(argv.output, plist.build(
 fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/', argv.assets)
 fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/', argv.assets)
 fileman.cleanDrivers(argv.target + 'EFI/OC/Drivers/')
+fileman.cleanTools(argv.target + 'EFI/OC/Tools/')
 
 // validate
 getValidation(argv.assets + 'build/', argv.output)
