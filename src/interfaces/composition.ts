@@ -59,6 +59,7 @@ export default interface Composition {
   }
   uefi: {
     drivers: Array<string>
+    tools?: Array<string>
   }
   directCopy: Dictionary<Dictionary<any>>
 }
