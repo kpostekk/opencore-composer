@@ -13,6 +13,7 @@ import getValidation from './validator'
 import FileMan from './cleanMan'
 import { initString } from './initComposition'
 import Downloader from './downloader'
+import logger from './logger'
 
 const argv = yargs(hideBin(process.argv))
   .options({
@@ -26,7 +27,7 @@ const argv = yargs(hideBin(process.argv))
   })
   .argv
 
-console.log(argv, process.cwd())
+logger.info('Starting OpenCore Composer', argv)
 
 if (argv.init) {
   mkdirpSync(argv.target)
@@ -49,14 +50,14 @@ async function mainRun () {
   // download OpenCore if not present
   if (!(await pathExists(argv.assets + `OpenCore-${composition.use}.zip`)) || argv.download) {
     await downloader.downloadOpenCore(composition.use.split('-')[0], composition.use.split('-')[1])
-  } else console.log('Using downloaded', `OpenCore-${composition.use}.zip`)
+  } else logger.warn(`Using bundled OpenCore (${composition.use})`, { use: composition.use })
 
   // move files
   packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)
 
   await downloader.downloadKexts(composition)
 
-  if (argv.download) process.exit()
+  if (argv.download) { logger.warn('Exit after download, --download passed'); process.exit() }
 
   // save
   writeFileSync(argv.output, plist.build(
@@ -66,11 +67,13 @@ async function mainRun () {
   ))
 
   // copy
+  logger.info('Coping files to target', { target: argv.target })
   await Promise.all([
     fileman.copyMissingACPI(argv.target + 'EFI/OC/ACPI/', argv.assets),
     fileman.copyMissingDrivers(argv.target + 'EFI/OC/Drivers/', argv.assets)
   ])
   // and clean
+  logger.info('Cleaning target', { target: argv.target })
   await Promise.all([
     fileman.cleanDrivers(argv.target + 'EFI/OC/Drivers/'),
     fileman.cleanTools(argv.target + 'EFI/OC/Tools/')
@@ -81,5 +84,5 @@ async function mainRun () {
 }
 
 mainRun()
-  // .catch((err: Error) => console.error(err.name + ':', err.message))
+  .catch((err: Error) => logger.error(err.name, err))
   .then(() => process.exit())

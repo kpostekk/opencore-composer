@@ -1,5 +1,6 @@
 import Composition from './interfaces/composition'
 import { copy, readdir, remove } from 'fs-extra'
+import logger from "./logger"
 
 export default class FileMan {
   private readonly composition: Composition
@@ -13,9 +14,9 @@ export default class FileMan {
       if (!(await readdir(acpiPath)).includes(acpiName)) {
         try {
           await copy(assetsPath + acpiName, acpiPath + acpiName)
-          console.log('Copy ' + acpiName + ' to ACPI directory')
+          logger.debug('Copy referenced ACPI', { ACPI: acpiName })
         } catch (err) {
-          console.warn(err)
+          logger.error('Copy failed', err)
         }
       }
     }
@@ -26,9 +27,9 @@ export default class FileMan {
       if (!(await readdir(driversPath)).includes(driverName)) {
         try {
           await copy(assetsPath + driverName, driversPath + driverName)
-          console.log('Copy ' + driverName + ' to Drivers directory')
+          logger.debug('Copy referenced UEFI driver', { driver: driverName })
         } catch (err) {
-          console.warn(err)
+          logger.error('Copy failed', err)
         }
       }
     }
@@ -38,7 +39,7 @@ export default class FileMan {
     for (const filePath of await readdir(driversPath)) {
       if (!this.composition.uefi.drivers.includes(filePath)) {
         await remove(driversPath + filePath)
-        console.log('Removed ' + filePath + ' from Drivers directory')
+        logger.debug('Removed unreferenced UEFI driver from Drivers directory', { file: filePath })
       }
     }
   }
@@ -47,7 +48,7 @@ export default class FileMan {
     for (const filePath of await readdir(toolsPath)) {
       if (!this.composition.uefi.tools?.includes(filePath) ?? []) {
         await remove(toolsPath + filePath)
-        console.log('Removed ' + filePath + ' from Tools directory')
+        logger.debug('Removed unreferenced UEFI tool from Tools directory', { file: filePath })
       }
     }
   }
