@@ -17,7 +17,7 @@ export default class Composer {
       ACPI: {
         Add: this.composition.acpi?.copy?.map((name) => {
           const addEntry: AcpiAdd = {
-            Comment: 'Added by composer',
+            Comment: '',
             Enabled: true,
             Path: name
           }
