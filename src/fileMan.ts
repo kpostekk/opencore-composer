@@ -23,7 +23,6 @@ export default class FileMan {
         targetPath + kextName + '.kext/',
         { recursive: true }
       )
-      logger.debug('Copied kext', { kext: kextName })
     }
     logger.info(`Copied ${this.composition.kernel.kexts.copy.length ?? 0} kexts`, { copy: this.composition.kernel.kexts.copy })
   }
@@ -33,9 +32,8 @@ export default class FileMan {
       if (!(await readdir(acpiPath)).includes(acpiName)) {
         try {
           await copy(this.assets + acpiName, acpiPath + acpiName)
-          logger.debug('Copy referenced ACPI', { ACPI: acpiName })
         } catch (err) {
-          logger.error('Copy failed', err)
+          logger.crit('Copy failed', err)
         }
       }
     }
@@ -47,9 +45,8 @@ export default class FileMan {
       if (!(await readdir(driversPath)).includes(driverName)) {
         try {
           await copy(this.assets + driverName, driversPath + driverName)
-          logger.debug('Copy referenced UEFI driver', { driver: driverName })
         } catch (err) {
-          logger.error('Copy failed', err)
+          logger.crit('Copy failed', err)
         }
       }
     }
@@ -60,7 +57,7 @@ export default class FileMan {
     for (const filePath of await readdir(driversPath)) {
       if (!this.composition.uefi.drivers.includes(filePath)) {
         await remove(driversPath + filePath)
-        logger.debug('Removed unreferenced UEFI driver from Drivers directory', { file: filePath })
+        logger.debug(`Removed unreferenced ${filePath} UEFI driver from Drivers directory`, { file: filePath })
       }
     }
   }
@@ -69,7 +66,7 @@ export default class FileMan {
     for (const filePath of await readdir(toolsPath)) {
       if (!this.composition.uefi.tools?.includes(filePath) ?? []) {
         await remove(toolsPath + filePath)
-        logger.debug('Removed unreferenced UEFI tool from Tools directory', { file: filePath })
+        logger.debug(`Removed unreferenced UEFI ${filePath} tool from Tools directory`, { file: filePath })
       }
     }
   }

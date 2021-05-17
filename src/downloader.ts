@@ -17,8 +17,6 @@ export default class Downloader {
   }
 
   async downloadOpenCore (version: string, build: string = 'RELEASE') {
-    logger.debug('Downloading OpenCore', { version: version + build })
-
     const ocName = 'OpenCore-{v}-{b}.zip'
       .replaceAll('{v}', version)
       .replaceAll('{b}', build)
@@ -34,7 +32,7 @@ export default class Downloader {
       await response.buffer()
     )
 
-    logger.debug('OpenCore saved', { as: ocName })
+    logger.debug(`Downloaded OpenCore ${version}-${build}`, { as: ocName })
   }
 
   async downloadKexts (composition: Composition) {
@@ -45,8 +43,6 @@ export default class Downloader {
   }
 
   private async downloadAcidantheraKext (kext: string, version: string, build: string = 'RELEASE') {
-    logger.debug('Downloading kext', { kextName: kext, version: version, build: build })
-
     const response = await fetch(
       this.links.AcidantheraKexts
         .replaceAll('{v}', version)
@@ -58,10 +54,8 @@ export default class Downloader {
       throw Error(`"${kext}" is not an AcidantheraKexts!`)
     }
 
-    logger.debug('Extracting downloaded kext', { kextName: kext, version: version, build: build })
-
     const kextZip = new AdmZip(await response.buffer())
     kextZip.extractAllTo(this.dlPath)
-    logger.debug('Kext extracted', { kextName: kext, version: version, build: build })
+    logger.debug(`Downloaded and extracted ${kext}`, { kextName: kext, version: version, build: build })
   }
 }

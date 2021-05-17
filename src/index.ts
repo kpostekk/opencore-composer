@@ -52,8 +52,9 @@ async function mainRun () {
 
   // download OpenCore if not present
   if (!(await pathExists(argv.assets + `OpenCore-${composition.use}.zip`)) || argv.download) {
+    logger.warn(`Unable to find specified version of OpenCore (${composition.use}), downloading...`)
     await downloader.downloadOpenCore(composition.use.split('-')[0], composition.use.split('-')[1])
-  } else logger.warn(`Using bundled OpenCore (${composition.use})`, { use: composition.use })
+  } else logger.info(`Using bundled OpenCore (${composition.use})`, { use: composition.use })
 
   // move files
   packer.unpackOpenCore(`OpenCore-${composition.use}.zip`, composition.arch)
@@ -96,7 +97,7 @@ const compileStart = process.hrtime.bigint()
 
 mainRun()
   .catch((err: Error) => {
-    logger.error(err.name, err)
+    logger.crit(err.name, err)
     process.exit(78)
   })
   .then(() => {
