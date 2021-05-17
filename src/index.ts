@@ -3,7 +3,7 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import Composer from './composer'
-import { mkdirpSync, pathExists, readFileSync, writeFileSync } from 'fs-extra'
+import { mkdirpSync, pathExists, readFile, writeFile, writeFileSync } from 'fs-extra'
 import * as YAML from 'YAML'
 import * as plist from 'plist'
 import { PlistObject } from 'plist'
@@ -42,7 +42,7 @@ if (argv.init) {
 async function mainRun () {
   // define composition manager
   const composer = new Composer(
-    YAML.parse(readFileSync(argv.composition).toString()) as Composition
+    YAML.parse((await readFile(argv.composition)).toString()) as Composition
   )
   const composition = composer.composition
   // define files managers
@@ -82,9 +82,9 @@ async function mainRun () {
   ])
 
   // save
-  writeFileSync(argv.output, plist.build(
+  await writeFile(argv.output, plist.build(
     composer.mergeWith(
-      plist.parse(readFileSync(argv.input).toString()) as PlistObject
+        plist.parse((await readFile(argv.input)).toString()) as PlistObject
     )
   ))
   logger.info('Saved config file', { location: argv.output, source: argv.input })
