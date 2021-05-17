@@ -13,7 +13,7 @@ npx tsc
 
 ### Requirements
 
-- NodeJS (w/ npm ofc) (idk what version, 14 is ok I guess)
+- NodeJS v15 or newer
 - Git
 - Brain
 
